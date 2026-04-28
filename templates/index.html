@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Tumour MRI Detection | TMU</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+  <div class="brand">🧠 NeuroDetect AI</div>
+  <div class="nav-links">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="/dataset">Dataset</a>
+    <a href="{{ url_for('about') }}">About</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>Brain Tumour Detection<br><span>powered by Deep Learning</span></h1>
+    <p>Upload an MRI scan and our CNN model will instantly classify it into one of four categories with confidence score.</p>
+    <a href="#upload" class="btn-primary">Get Started ↓</a>
+  </div>
+</header>
+
+<section id="upload" class="upload-section">
+  <h2>📤 Upload MRI Scan</h2>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for m in messages %}<div class="alert">{{ m }}</div>{% endfor %}{% endif %}
+  {% endwith %}
+
+  <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+    <label for="file" class="upload-box" id="uploadBox">
+      <div id="placeholder">
+        <div class="upload-icon">⬆️</div>
+        <p><strong>Click to choose</strong> or drag & drop MRI image</p>
+        <small>PNG, JPG, JPEG, BMP</small>
+      </div>
+      <img id="preview" hidden>
+    </label>
+    <input type="file" name="file" id="file" accept="image/*" required hidden>
+    <button type="submit" class="btn-primary">🧠 Analyze MRI</button>
+  </form>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <div class="emoji">🎯</div>
+    <h3>High Accuracy AI Model</h3>
+    <p>Trained on 7,000+ MRI scans with state-of-the-art CNN architecture.</p>
+  </div>
+  <div class="feature-card">
+    <div class="emoji">⚡</div>
+    <h3>Instant Results</h3>
+    <p>Get tumor classification in under 2 seconds.</p>
+  </div>
+  <div class="feature-card">
+    <div class="emoji">🔬</div>
+    <h3>4 Tumor Classes</h3>
+    <p>Detects Glioma, Meningioma, Pituitary tumors and No-tumor cases.</p>
+  </div>
+</section>
+<p style="color: #aaa; font-size: 12px; text-align: center; margin-top: 20px;">
+This system is for educational purposes only and not for medical diagnosis.
+</p>
+<footer>
+  <p>Major Project (BCAMP23601) | BCA | Teerthanker Mahaveer University, Moradabad</p>
+  <p>© 2026 • Mobin Shaikh</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About | NeuroDetect AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="brand">🧠 NeuroDetect AI</div>
+  <div class="nav-links">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+  </div>
+</nav>
+
+<section class="about-section">
+
+  <h2>🧠 About the Project</h2>
+
+  <div class="about-card">
+    <p>
+      NeuroDetect AI is a web-based application developed as a major project 
+      for BCA program at TMU Moradabad. It uses a Convolutional Neural Network (CNN) 
+      to analyze brain MRI images and classify them into Glioma, Meningioma, 
+      Pituitary Tumor, and No Tumor.
+    </p>
+
+    <p style="margin-top:10px; color:#a88aff;">
+       AI-powered Brain Tumor Detection System for early diagnosis and assistance.
+    </p>
+  </div>
+
+  <!-- Changed here -->
+  <h3>👨‍💻 Developed By</h3>
+
+  <div class="team-grid">
+    <div class="member-card">
+      <div class="avatar"></div>
+      <h4> Mr.Mobin Shaikh</h4>
+      <p>Full Stack Developer | AI Enthusiast</p>
+    </div>
+  </div>
+
+  <h3>⚙️ Tech Stack</h3>
+
+  <div class="tech-card">
+    <ul>
+      <li><b>TensorFlow & Keras:</b> Model training</li>
+      <li><b>Flask:</b> Backend framework</li>
+      <li><b>OpenCV & Pillow:</b> Image processing</li>
+      <li><b>NumPy:</b> Numerical operations</li>
+      <li><b>Matplotlib:</b> Visualization</li>
+    </ul>
+
+    <div style="margin-top:10px;">
+      <span class="badge">AI Powered</span>
+      <span class="badge">CNN Model</span>
+      <span class="badge">Real-time Prediction</span>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <p style="font-size:13px; color:#aaa;">
+</p> Not a substitute for professional medical diagnosis.<br>
+    📧 Contact: mobinshaikhns786@email.com
+  </p>
+  <p style="font-size:11px; color:#666;">
+©️ 2026 NeuroDetect AI | Developed by Mobin Shaikh
+</p>
+</footer>
+
+</body>
+</html>

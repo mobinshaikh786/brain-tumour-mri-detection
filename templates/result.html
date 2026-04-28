@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Result | NeuroDetect AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+   <div class="brand">
+  <span class="logo">🧠</span>
+  <span class="title">NeuroDetect AI</span>
+</div>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+  </div>
+</nav>
+<marquee behavior="scroll" direction="left" style="color:#ff4d4d; font-weight:bold; margin-bottom:10px;">
+⚠️ AI Detection Result — For educational use only. Always consult a medical professional.
+</marquee>
+<section class="result-section">
+  <h2>🔬 Analysis Result</h2>
+  {% if demo_mode %}
+  <div class="alert">⚠️ Running in DEMO mode — train a model (run <code>python train_model.py</code>) for real predictions.</div>
+  {% endif %}
+
+  <div class="result-grid">
+    <div class="mri-card">
+      <h3>📷 Uploaded MRI</h3>
+      <img src="/{{ image_path }}" alt="Uploaded MRI">
+    </div>
+
+    <div class="diagnosis-card">
+      <h3>🧠 Diagnosis</h3>
+      <div class="label-badge">{{ label }}</div>
+      {% if label != 'No Tumor' %}
+<div style="background:#ff4d4d20; border-left:5px solid red; padding:10px; margin:10px 0; border-radius:8px;">
+  ⚠️ Warning: Possible {{ label }} detected. Please consult a doctor immediately.
+</div>
+{% else %}
+<div style="background:#00d68f20; border-left:5px solid #00d68f; padding:10px; margin:10px 0; border-radius:8px;">
+  ✅ No tumor detected. Brain appears healthy.
+</div>
+{% endif %}
+      <p style="text-align:center; font-weight:500; margin-top:10px;">
+<strong>Prediction Summary:</strong> Based on MRI scan, the model predicts {{ label }}.
+<p class="description">
+{% if label == 'Glioma Tumor' %}
+Glioma is a serious brain tumor that arises from glial cells. Requires medical attention.
+{% elif label == 'Meningioma Tumor' %}
+Meningioma develops in brain membranes. Usually treatable if detected early.
+{% elif label == 'Pituitary Tumor' %}
+Pituitary tumor affects hormone levels. Often manageable with treatment.
+{% else %}
+No tumor detected. Brain condition looks normal.
+{% endif %}
+</p>
+</p>
+      <div class="confidence">
+  <div class="conf-bar">
+    <div class="conf-fill"
+         style="width: {{ confidence }}%;
+         background-color: {% if confidence > 70 %}green{% elif confidence > 50 %}orange{% else %}red{% endif %};">
+    </div>
+  </div>
+    <p><strong>{{ confidence }}%</strong> confidence</p>      </div>
+      <p class="description">{{ description }}</p>
+
+      <h4>📊 All Class Probabilities</h4>
+      <canvas id="myChart"></canvas>
+      {% for cls, p in probs.items() %}
+        <div class="prob-row">
+          <span>{{ cls }}</span>
+          <div class="prob-bar">
+  <div class="prob-fill"
+       style="width: {{ p }}%;
+       background-color:
+       {% if cls == 'Glioma Tumor' %}#ff4d4d
+       {% elif cls == 'Meningioma Tumor' %}#ffa500
+       {% elif cls == 'No Tumor' %}#00d68f
+       {% elif cls == 'Pituitary Tumor' %}#4f9cf9
+       {% endif %};">
+  </div>
+</div>
+          <span>{{ "%.1f"|format(p) }}%</span>
+        </div>
+      {% endfor %}
+
+      <a href="{{ url_for('index') }}" class="btn-primary">↺ Analyze Another</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>For educational purposes only — Not a substitute for professional medical diagnosis.</p>
+</footer>
+<script>
+const labels = {{ probs.keys() | list | tojson }};
+const values = {{ probs.values() | list | tojson }};
+
+new Chart(document.getElementById('myChart'), {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: values,
+            backgroundColor: ['#ff4d4d','#ffa500','#00d68f','#4f9cf9']
+        }]
+    }
+});
+</script>
+
+
+</body>
+</html>
+

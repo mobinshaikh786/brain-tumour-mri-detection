@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataset Manager | NeuroDetect AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+  <div class="brand">🧠 NeuroDetect AI</div>
+  <div class="nav-links">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('dataset_page') }}">Dataset</a>
+    <a href="{{ url_for('about') }}">About</a>
+  </div>
+</nav>
+
+<section class="upload-section">
+  <h2>📂 Dataset Manager</h2>
+  <p style="color:#b8bdd1; max-width:700px; margin:0 auto 2rem;">
+    Upload your MRI dataset as a <strong>.zip file</strong>. ZIP me class folders hone chahiye:
+    <code>glioma/</code>, <code>meningioma/</code>, <code>notumor/</code>, <code>pituitary/</code>
+  </p>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for m in messages %}<div class="alert">{{ m }}</div>{% endfor %}{% endif %}
+  {% endwith %}
+
+  <!-- ZIP UPLOAD -->
+  <form action="{{ url_for('dataset_upload') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+    <label for="zipfile" class="upload-box">
+      <div>
+        <div class="upload-icon">🗂️</div>
+        <p><strong>Click to choose ZIP</strong> or drag & drop</p>
+        <small>Max 500MB • .zip only</small>
+        <p id="zipname" style="margin-top:1rem; color:#4f9cf9;"></p>
+      </div>
+    </label>
+    <input type="file" name="zipfile" id="zipfile" accept=".zip" required hidden
+           onchange="document.getElementById('zipname').textContent = this.files[0]?.name || ''">
+
+    <label style="color:#b8bdd1;">
+      <input type="checkbox" name="replace" value="yes"> Replace existing dataset (delete old images first)
+    </label>
+    <button type="submit" class="btn-primary">⬆️ Upload & Extract</button>
+  </form>
+</section>
+
+<!-- CURRENT DATASET STATS -->
+<section class="upload-section" style="padding-top:1rem;">
+  <h2 style="font-size:1.6rem;">📊 Current Dataset</h2>
+  {% if stats %}
+    <div class="features" style="padding:2rem 0;">
+      {% for cls, count in stats.items() %}
+      <div class="feature-card">
+        <div class="emoji">📁</div>
+        <h3>{{ cls }}</h3>
+        <p style="font-size:2rem; color:#4f9cf9; font-weight:bold;">{{ count }}</p>
+        <p>images</p>
+      </div>
+      {% endfor %}
+    </div>
+    <p style="text-align:center; color:#b8bdd1;">
+      <strong>Total:</strong> {{ stats.values()|sum }} images across {{ stats|length }} classes
+    </p>
+    <div style="text-align:center; margin-top:2rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <form action="{{ url_for('dataset_train') }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn-primary" {% if train_state.running %}disabled{% endif %}>
+          {% if train_state.running %}⏳ Training...{% else %}🧠 Start Training{% endif %}
+        </button>
+      </form>
+      <form action="{{ url_for('dataset_clear') }}" method="POST" style="display:inline;"
+            onsubmit="return confirm('Sure? Yeh saari images delete kar dega.');">
+        <button type="submit" class="btn-primary" style="background:linear-gradient(90deg,#ff6b6b,#ee5a5a);">🗑️ Clear Dataset</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="alert" style="text-align:center;">📭 No dataset uploaded yet. Upload a ZIP above to get started.</div>
+  {% endif %}
+</section>
+
+<!-- TRAINING LOG -->
+{% if train_state.log %}
+<section class="upload-section">
+  <h2 style="font-size:1.6rem;">🖥️ Training Log
+    <span id="liveDot" style="font-size:.9rem; color:#00d68f;">{% if train_state.running %}● LIVE{% endif %}</span>
+  </h2>
+  <pre id="trainLog" style="background:#000; color:#0f0; padding:1.5rem; border-radius:12px;
+       max-height:400px; overflow:auto; font-family:Consolas,monospace; font-size:.85rem;
+       white-space:pre-wrap; border:1px solid rgba(100,150,255,.2);">{{ train_state.log }}</pre>
+</section>
+{% endif %}
+
+<footer>
+  <p>Major Project (BCAMP23601) | BCA | Teerthanker Mahaveer University, Moradabad</p>
+  <p>© 2026 Mobin Shaikh</p>
+</footer>
+
+<script>
+// Live-poll training log
+{% if train_state.running %}
+const poll = setInterval(async () => {
+  const r = await fetch('/dataset/train-status');
+  const s = await r.json();
+  document.getElementById('trainLog').textContent = s.log;
+  if (!s.running) {
+    document.getElementById('liveDot').textContent = '✅ DONE';
+    clearInterval(poll);
+    setTimeout(() => location.reload(), 2000);
+  }
+}, 2000);
+{% endif %}
+</script>
+</body>
+</html>
