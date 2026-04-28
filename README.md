@@ -3,7 +3,7 @@
 **Major Project (BCAMP23601) — BCA**
 **Teerthanker Mahaveer University, Moradabad**
 
-###  Team Members
+### Developed By 
 | Name | Roll Number |
 |------|-------------|
 
