@@ -118,4 +118,4 @@ Open browser → **http://127.0.0.1:5000**
 ---
 
 ##  License
-Educational use only — TMU Major Project 2024-25.
+Educational use only — TMU Major Project 2025-26.
