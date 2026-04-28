@@ -1,9 +1,9 @@
-# 🧠 Brain Tumour MRI Detection using Deep Learning
+# Brain Tumour MRI Detection using Deep Learning
 
 **Major Project (BCAMP23601) — BCA**
 **Teerthanker Mahaveer University, Moradabad**
 
-### 👨‍💻 Team Members
+###  Team Members
 | Name | Roll Number |
 |------|-------------|
 
@@ -11,7 +11,7 @@
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 This project uses a **Convolutional Neural Network (CNN)** built with TensorFlow/Keras to classify brain MRI scans into 4 categories:
 - **Glioma Tumor**
 - **Meningioma Tumor**
@@ -68,7 +68,7 @@ pip install -r requirements.txt
 
 ### 3️⃣ Download the dataset
 Download from Kaggle:
-👉 https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset
+https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset
 
 Extract and place folders inside `dataset_sample/` like this:
 ```
@@ -85,9 +85,9 @@ python train_model.py
 ```
 This will create `model/brain_tumor_model.h5` (takes ~10-30 minutes depending on GPU/CPU).
 
-> ⚡ **Don't want to train?** Skip to step 5 — the app will use a demo mode if no model is found.
+>  **Don't want to train?** Skip to step 5 — the app will use a demo mode if no model is found.
 
-### 5️⃣ Run the Flask web app 🚀
+### 5️⃣ Run the Flask web app 
 ```bash
 python app.py
 ```
@@ -97,7 +97,7 @@ Open browser → **http://127.0.0.1:5000**
 
 ---
 
-## 🧠 Model Architecture
+##  Model Architecture
 - 4 × Conv2D + MaxPooling layers
 - BatchNormalization + Dropout for regularization
 - Dense(256) → Dense(4, softmax)
@@ -117,5 +117,5 @@ Open browser → **http://127.0.0.1:5000**
 
 ---
 
-## 📜 License
+##  License
 Educational use only — TMU Major Project 2024-25.
